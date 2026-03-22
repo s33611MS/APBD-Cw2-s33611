@@ -9,5 +9,5 @@ public abstract class User(string name, string surname, string type)
     public string Surname { get; set; } = surname;
     public string Type { get; set; } = type;
 
-    public abstract int GetMaxRented();
+    public abstract int GetMaxRentals();
 }

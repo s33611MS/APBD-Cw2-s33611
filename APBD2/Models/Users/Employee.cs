@@ -2,5 +2,5 @@
 
 public class Employee(string name, string surname) : User(name, surname, "Employee")
 {
-    public override int GetMaxRented() => 5;
+    public override int GetMaxRentals() => 5;
 }
