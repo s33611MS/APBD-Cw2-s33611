@@ -3,5 +3,6 @@
 public enum DeviceStatus
 {
     Free,
-    Rented
+    Rented,
+    Unavailable
 }
