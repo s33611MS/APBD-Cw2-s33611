@@ -12,26 +12,24 @@ public class RentalService : IRentalService
 
     public void CreateRental(User user, Device device, DateTime to, int penalty)
     {
-        int currentUserRentals = _rentals.Count(rental => rental.User == user && !rental.Returned);
         if (device.Status != DeviceStatus.Free)
         {
-            throw new DeviceUnavailableException(device.Id);
+            throw new DeviceUnavailableException(device.Name);
         }
 
-        int currentRentals = _rentals.Count(rental => 
-            !rental.Returned
-            && rental.User == user);
+        int currentRentals = _rentals.Count(rental => !rental.Returned && rental.User == user);
 
         if (currentRentals >= user.GetMaxRentals())
         {
-            throw new TooManyRentalsException(user.Id);
+            throw new TooManyRentalsException(user.Name, user.Surname);
         }
         
         var newRental = new Rental(device, user, to, penalty);
+        newRental.Rent();
         _rentals.Add(newRental);
     }
 
-    public int ReturnRental(int rentalId)
+    public void ReturnRental(int rentalId)
     {
         var rental = _rentals.FirstOrDefault(rental => rental.Id == rentalId);
         
@@ -40,15 +38,11 @@ public class RentalService : IRentalService
         
         rental.Return();
         
-        int onTime = DateTime.Today.CompareTo(rental.To);
-        
-        if (onTime > 0)
+        if (DateTime.Today.CompareTo(rental.To) > 0)
         {
             rental.NotOnTime();
-            return onTime * rental.Penalty;
+            throw new DeviceReturnedLateException(rental.User.Name, rental.User.Surname, rental.Penalty);
         }
-
-        return 0;
     }
 
     public List<Rental> GetUserRentals(User user)

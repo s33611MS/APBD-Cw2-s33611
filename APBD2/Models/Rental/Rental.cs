@@ -1,4 +1,5 @@
-﻿using APBD2.Models.Devices;
+﻿using APBD2.Enums;
+using APBD2.Models.Devices;
 using APBD2.Models.Users;
 
 namespace APBD2.Models.Rental;
@@ -15,8 +16,14 @@ public class Rental(Device device, User user, DateTime to, int penalty)
     public bool Returned { get; private set; }
     public bool ReturnedOnTime { get; private set; } = true;
     
-    public void Return() => Returned = true;
-    
+    public void Rent() => Device.Status = DeviceStatus.Rented;
+
+    public void Return()
+    {
+        Returned = true;
+        Device.Status = DeviceStatus.Free;
+    }
+
     public void NotOnTime() => ReturnedOnTime = false;
     
 }
