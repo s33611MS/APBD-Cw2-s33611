@@ -1,6 +1,8 @@
-﻿namespace APBD2.Models.Users;
+﻿using APBD2.Enums;
 
-public class Student(string name, string surname) : User(name, surname, "Student")
+namespace APBD2.Models.Users;
+
+public class Student(string name, string surname) : User(name, surname, UserType.Student)
 {
     public override int GetMaxRentals() => 2;
 }
