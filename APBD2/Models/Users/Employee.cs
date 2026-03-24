@@ -1,6 +1,8 @@
-﻿namespace APBD2.Models.Users;
+﻿using APBD2.Enums;
 
-public class Employee(string name, string surname) : User(name, surname, "Employee")
+namespace APBD2.Models.Users;
+
+public class Employee(string name, string surname) : User(name, surname, UserType.Employee)
 {
     public override int GetMaxRented() => 5;
 }
